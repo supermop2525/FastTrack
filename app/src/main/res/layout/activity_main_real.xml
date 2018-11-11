@@ -59,17 +59,16 @@
         android:id="@+id/French"
         android:layout_width="90dp"
         android:layout_height="30dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="62dp"
         android:layout_marginBottom="61dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="62dp"
         android:gravity="center"
         android:text="@string/French"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/Spanish"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ChooseLanguage"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.489" />
 
     <TextView
         android:id="@+id/WelcomeTitle"
@@ -152,6 +151,18 @@
         android:background="@android:drawable/btn_dropdown"
         android:entries="@array/language_array"
         android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Spanish" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="389dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
