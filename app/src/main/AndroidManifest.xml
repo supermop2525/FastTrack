@@ -19,6 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".StatusCheck"></activity>
+        <activity android:name=".new"></activity>
+        <activity android:name=".new2"></activity>
+        <activity android:name=".notDetected"></activity>
+        <activity android:name=".finalPage"></activity>
     </application>
 
 </manifest>

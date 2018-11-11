@@ -30,12 +30,12 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StatusCheck.class);
+                Intent intent = new Intent(MainActivity.this, StatusCheck.class);
                 startActivity(intent);
             }
         });
 
-        detectionProgressDialog = new ProgressDialog(this);
+        //detectionProgressDialog = new ProgressDialog(this);
     }
     // Detect faces by uploading a face image.
     // Frame faces after detection.
