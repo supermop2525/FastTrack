@@ -19,10 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".StatusCheck"></activity>
-        <activity android:name=".new"></activity>
-        <activity android:name=".new2"></activity>
-        <activity android:name=".notDetected"></activity>
-        <activity android:name=".finalPage"></activity>
+        <activity android:name=".New"></activity>
+        <activity android:name=".New2"></activity>
+        <activity android:name=".NotDetected"></activity>
+        <activity android:name=".FinalPage"></activity>
+        <activity android:name=".Existing"></activity>
     </application>
 
 </manifest>

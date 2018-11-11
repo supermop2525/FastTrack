@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.graphics.Bitmap;
 
 public class StatusCheck extends AppCompatActivity{
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,15 @@ public class StatusCheck extends AppCompatActivity{
             }
         });
 
+        Button button2 = (Button)findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StatusCheck.this,New.class);
+                startActivity(intent);
+            }
+        });
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -35,8 +44,9 @@ public class StatusCheck extends AppCompatActivity{
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            // DO check in filelist
-
+            // DO check in filelist and see if match send faceid to existing somehow
+            Intent intent = new Intent(StatusCheck.this, Existing.class);
+            startActivity(intent);
         }
     }
 }
