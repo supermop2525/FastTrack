@@ -7,14 +7,12 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="382dp"
+        android:layout_width="332dp"
         android:layout_height="154dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="13dp"
-        android:layout_marginTop="136dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="313dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="136dp"
         android:gravity="center"
         android:text="@string/finish_page"
         android:textSize="25sp"
