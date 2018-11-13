@@ -97,7 +97,7 @@ public class calls {
     }
 
     public void add(Face face) {
-        AsyncTask<InputStream, String, Face[]> detectTask =
+        AsyncTask<InputStream, String, Face[]> addTask =
                 new AsyncTask<InputStream, String, Face[]>() {
                     String exceptionMessage = "";
                     @Override
@@ -129,18 +129,18 @@ public class calls {
                     }
                 };
 
-        detectTask.execute();
+        addTask.execute();
     }
 
     public void getFaceListArray() {
-        AsyncTask<InputStream, String, Face[]> detectTask =
+        AsyncTask<InputStream, String, Face[]> getListTask =
                 new AsyncTask<InputStream, String, Face[]>() {
                     String exceptionMessage = "";
                     @Override
                     protected Face[] doInBackground(InputStream... params) {
                         try {
                             publishProgress("Detecting...");
-                            faceServiceClient.addFacesToFaceList("id1",apiEndpoint,null,null);
+                            faceServiceClient.getFaceList("id1");
                             return null;
                             //Log.d("randd",""+faceServiceClient.getFaceList("id1").persistedFaces.length);
                         } catch (Exception e) {
@@ -150,6 +150,6 @@ public class calls {
                     }
                 };
 
-        detectTask.execute();
+        getListTask.execute();
     }
 }
