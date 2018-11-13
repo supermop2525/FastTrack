@@ -5,8 +5,11 @@ import android.util.Log;
 import android.graphics.*;
 import com.microsoft.projectoxford.face.FaceServiceClient;
 import com.microsoft.projectoxford.face.FaceServiceRestClient;
+import com.microsoft.projectoxford.face.contract.AddPersistedFaceResult;
 import com.microsoft.projectoxford.face.contract.Face;
 import com.microsoft.projectoxford.face.*;
+import com.microsoft.projectoxford.face.contract.FaceList;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -97,15 +100,15 @@ public class calls {
     }
 
     public void add(Face face) {
-        AsyncTask<InputStream, String, Face[]> addTask =
-                new AsyncTask<InputStream, String, Face[]>() {
+        AsyncTask<Face, String, AddPersistedFaceResult> addTask =
+                new AsyncTask<Face, String, AddPersistedFaceResult>() {
                     String exceptionMessage = "";
                     @Override
-                    protected Face[] doInBackground(InputStream... params) {
+                    protected AddPersistedFaceResult doInBackground(Face... params) {
                         try {
                             publishProgress("Adding...");
-                            faceServiceClient.addFacesToFaceList("id1",apiEndpoint,null,null);
-                            return null;
+                            AddPersistedFaceResult result = faceServiceClient.addFacesToFaceList("id1",apiEndpoint,null,null);
+                            return result;
                             //Log.d("randd",""+faceServiceClient.getFaceList("id1").persistedFaces.length);
                         } catch (Exception e) {
                             Log.d("Add to FaceList failed:", e.toString());
@@ -120,36 +123,58 @@ public class calls {
                         Log.d("progress",progress[0]);
                     }
                     @Override
-                    protected void onPostExecute(Face[] result) {
+                    protected void onPostExecute(AddPersistedFaceResult result) {
                         Log.d("Add","done");
                         if(!exceptionMessage.equals("")){
-                            Log.d("Rrror in post Add",exceptionMessage);
+                            Log.d("Error in post Add",exceptionMessage);
                         }
                         if (result == null) return;
                     }
                 };
-
-        addTask.execute();
+        addTask.execute(face);
     }
 
-    public void getFaceListArray() {
-        AsyncTask<InputStream, String, Face[]> getListTask =
-                new AsyncTask<InputStream, String, Face[]>() {
+    public FaceList getFaceListArray() {
+        AsyncTask<InputStream, String, FaceList> getListTask =
+                new AsyncTask<InputStream, String, FaceList>() {
                     String exceptionMessage = "";
                     @Override
-                    protected Face[] doInBackground(InputStream... params) {
+                    protected FaceList doInBackground(InputStream... params) {
                         try {
                             publishProgress("Detecting...");
-                            faceServiceClient.getFaceList("id1");
-                            return null;
+                            FaceList fl = faceServiceClient.getFaceList("id1");
+                            return fl;
                             //Log.d("randd",""+faceServiceClient.getFaceList("id1").persistedFaces.length);
                         } catch (Exception e) {
                             Log.d("hereerror", e.toString());
                             return null;
                         }
                     }
+                    @Override
+                    protected void onPreExecute() {
+                    }
+                    @Override
+                    protected void onProgressUpdate(String... progress) {
+                        Log.d("progress",progress[0]);
+                    }
+                    @Override
+                    protected void onPostExecute(FaceList result) {
+                        Log.d("Get FaceList","done");
+                        if(!exceptionMessage.equals("")){
+                            Log.d("Error in post Get FL",exceptionMessage);
+                        }
+                        if (result == null) return;
+                    }
                 };
-
         getListTask.execute();
+        while (getListTask.getStatus()!= AsyncTask.Status.FINISHED){
+        }
+        try {
+            return getListTask.get();
+        }
+        catch (Exception e){
+            Log.d("Error in return get",e.toString());
+        }
+        return null;
     }
 }
