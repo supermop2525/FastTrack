@@ -37,30 +37,99 @@ public class calls {
 
         makeTask.execute();
     }
-    public void add(final Bitmap imageBitmap) {
+    public void detectAndAdd(final Bitmap imageBitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         ByteArrayInputStream inputStream =
                 new ByteArrayInputStream(outputStream.toByteArray());
 
-        AsyncTask<InputStream, String, Face[]> addTask =
+        AsyncTask<InputStream, String, Face[]> detectAndaddTask =
                 new AsyncTask<InputStream, String, Face[]>() {
                     String exceptionMessage = "";
                     @Override
                     protected Face[] doInBackground(InputStream... params) {
                         try {
                             publishProgress("Detecting...");
-                            faceServiceClient.addFacesToFaceList("id1",apiEndpoint,null,null);
-                            //Log.d("randd",""+faceServiceClient.getFaceList("id1").persistedFaces.length);
-                            return null;
+                            Face[] result = faceServiceClient.detect(
+                                    params[0],
+                                    true,         // returnFaceId
+                                    false,        // returnFaceLandmarks
+                                    null          // returnFaceAttributes:
+                                /* new FaceServiceClient.FaceAttributeType[] {
+                                    FaceServiceClient.FaceAttributeType.Age,
+                                    FaceServiceClient.FaceAttributeType.Gender }
+                                */
+                            );
+                            if (result == null){
+                                publishProgress(
+                                        "Detection Finished. Nothing detected");
+                                return null;
+                            }
+                            publishProgress(String.format(
+                                    "Detection Finished. %d face(s) detected",
+                                    result.length));
+                            return result;
                         } catch (Exception e) {
-                            Log.d("hereerror", e.toString());
+                            exceptionMessage = String.format(
+                                    "Detection failed: %s", e.getMessage());
                             return null;
                         }
                     }
+
+                    @Override
+                    protected void onPreExecute() {
+                    }
+                    @Override
+                    protected void onProgressUpdate(String... progress) {
+                        Log.d("progress",progress[0]);
+                    }
+                    @Override
+                    protected void onPostExecute(Face[] result) {
+                        Log.d("Detect","done");
+                        if(!exceptionMessage.equals("")){
+                            Log.d("Error in post detect",exceptionMessage);
+                        }
+                        if (result == null) return;
+                        add(result[0]);
+                    }
+                };
+        detectAndaddTask.execute(inputStream);
+    }
+
+    public void add(Face face) {
+        AsyncTask<InputStream, String, Face[]> detectTask =
+                new AsyncTask<InputStream, String, Face[]>() {
+                    String exceptionMessage = "";
+                    @Override
+                    protected Face[] doInBackground(InputStream... params) {
+                        try {
+                            publishProgress("Adding...");
+                            faceServiceClient.addFacesToFaceList("id1",apiEndpoint,null,null);
+                            return null;
+                            //Log.d("randd",""+faceServiceClient.getFaceList("id1").persistedFaces.length);
+                        } catch (Exception e) {
+                            Log.d("Add to FaceList failed:", e.toString());
+                            return null;
+                        }
+                    }
+                    @Override
+                    protected void onPreExecute() {
+                    }
+                    @Override
+                    protected void onProgressUpdate(String... progress) {
+                        Log.d("progress",progress[0]);
+                    }
+                    @Override
+                    protected void onPostExecute(Face[] result) {
+                        Log.d("Add","done");
+                        if(!exceptionMessage.equals("")){
+                            Log.d("Rrror in post Add",exceptionMessage);
+                        }
+                        if (result == null) return;
+                    }
                 };
 
-        addTask.execute(inputStream);
+        detectTask.execute();
     }
 
     public void getFaceListArray() {
