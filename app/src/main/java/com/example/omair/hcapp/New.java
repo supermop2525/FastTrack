@@ -33,6 +33,10 @@ public class New extends AppCompatActivity{
         if (requestCode == REQUEST_IMAGE_CAPTURE1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            ASYNCcalls.calls calls= new ASYNCcalls.calls();
+            calls.detectAndAdd(imageBitmap);
+
             // add to sql server with faceid pass faceid to new2
             Intent intent = new Intent(New.this, New2.class);
             startActivity(intent);

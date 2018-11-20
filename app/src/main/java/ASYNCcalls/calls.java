@@ -9,10 +9,12 @@ import com.microsoft.projectoxford.face.contract.AddPersistedFaceResult;
 import com.microsoft.projectoxford.face.contract.Face;
 import com.microsoft.projectoxford.face.*;
 import com.microsoft.projectoxford.face.contract.FaceList;
+import com.microsoft.projectoxford.face.contract.VerifyResult;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.UUID;
 
 public class calls {
     private final String apiEndpoint = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
@@ -171,6 +173,51 @@ public class calls {
         }
         try {
             return getListTask.get();
+        }
+        catch (Exception e){
+            Log.d("Error in return get",e.toString());
+        }
+        return null;
+    }
+
+    public VerifyResult verifyFaces(UUID one, UUID two) {
+        AsyncTask<UUID[], String, VerifyResult> verifyTask =
+                new AsyncTask<UUID[], String, VerifyResult>() {
+                    String exceptionMessage = "";
+                    @Override
+                    protected VerifyResult doInBackground(UUID[]... params) {
+                        try {
+                            UUID[] faces=params[0];
+                            publishProgress("Detecting...");
+                            VerifyResult confidence = faceServiceClient.verify(faces[0],faces[1]);
+                            return confidence;
+                            //Log.d("randd",""+faceServiceClient.getFaceList("id1").persistedFaces.length);
+                        } catch (Exception e) {
+                            Log.d("hereerror", e.toString());
+                            return null;
+                        }
+                    }
+                    @Override
+                    protected void onPreExecute() {
+                    }
+                    @Override
+                    protected void onProgressUpdate(String... progress) {
+                        Log.d("progress",progress[0]);
+                    }
+                    @Override
+                    protected void onPostExecute(VerifyResult result) {
+                        Log.d("Get FaceList","done");
+                        if(!exceptionMessage.equals("")){
+                            Log.d("Error in post Get FL",exceptionMessage);
+                        }
+                        if (result == null) return;
+                    }
+                };
+        verifyTask.execute(new UUID[] {one,two});
+        while (verifyTask.getStatus()!= AsyncTask.Status.FINISHED){
+        }
+        try {
+            return verifyTask.get();
         }
         catch (Exception e){
             Log.d("Error in return get",e.toString());
