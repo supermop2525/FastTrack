@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
 
+import com.microsoft.projectoxford.face.contract.Face;
+import com.microsoft.projectoxford.face.contract.FaceList;
+
 public class StatusCheck extends AppCompatActivity{
     static final int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -45,6 +48,11 @@ public class StatusCheck extends AppCompatActivity{
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             // DO check in filelist and see if match send faceid to existing somehow
+            ASYNCcalls.calls x = new ASYNCcalls.calls();
+            FaceList fl = x.getFaceListArray();
+            for (PersistedFace face : f1.persistedFaces){
+                x.verifyFaces()
+            }
             Intent intent = new Intent(StatusCheck.this, Existing.class);
             startActivity(intent);
         }
